@@ -15,15 +15,15 @@ class SendStatement
 
     const TYPE_NOTIFICATION_WITH_MODEL = 'notification_with_model';
 
-    private string $mail;
+    protected string $mail;
 
-    private ?string $to;
+    protected ?string $to;
 
-    private string $type;
+    protected string $type;
 
-    private string $view;
+    protected string $view;
 
-    private string $subject;
+    protected string $subject;
 
     public function __construct(string $mail, ?string $to, array $data, string $type, ?string $view = null)
     {
@@ -78,7 +78,7 @@ class SendStatement
         return $this->view;
     }
 
-    private function mailOutput(): string
+    protected function mailOutput(): string
     {
         $code = 'Mail::';
 
@@ -97,7 +97,7 @@ class SendStatement
         return $code;
     }
 
-    private function notificationFacadeOutput(): string
+    protected function notificationFacadeOutput(): string
     {
         $code = 'Notification::';
 
@@ -114,7 +114,7 @@ class SendStatement
         return $code;
     }
 
-    private function notificationModelOutput(): string
+    protected function notificationModelOutput(): string
     {
         $code = '';
 
@@ -131,7 +131,7 @@ class SendStatement
         return $code;
     }
 
-    private function buildTo(): string
+    protected function buildTo(): string
     {
         $variable = str_replace('.', '->', $this->to());
 

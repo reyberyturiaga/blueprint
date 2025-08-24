@@ -27,16 +27,16 @@ class Policy implements BlueprintModel
         'destroy' => 'delete',
     ];
 
-    private string $name;
+    protected string $name;
 
-    private string $namespace;
+    protected string $namespace;
 
     /**
      * @var array<int, string>
      */
-    private array $methods;
+    protected array $methods;
 
-    private bool $authorizeResource;
+    protected bool $authorizeResource;
 
     /**
      * Controller constructor.

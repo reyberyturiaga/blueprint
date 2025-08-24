@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class ComponentLexer implements Lexer
 {
-    private StatementLexer $statementLexer;
+    protected StatementLexer $statementLexer;
 
     public function __construct(StatementLexer $statementLexer)
     {
@@ -48,7 +48,7 @@ class ComponentLexer implements Lexer
         return $registry;
     }
 
-    private function defaultRenderTokens(string $name): array
+    protected function defaultRenderTokens(string $name): array
     {
         return [
             'render' => [

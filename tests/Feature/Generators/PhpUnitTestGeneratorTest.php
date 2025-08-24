@@ -15,10 +15,10 @@ use Tests\TestCase;
  */
 final class PhpUnitTestGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     /** @var PhpUnitTestGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

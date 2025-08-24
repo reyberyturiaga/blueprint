@@ -32,7 +32,7 @@ class BuildCommand extends Command
 
     protected Filesystem $filesystem;
 
-    private Builder $builder;
+    protected Builder $builder;
 
     public function __construct(Filesystem $filesystem, Builder $builder)
     {
@@ -85,7 +85,7 @@ class BuildCommand extends Command
         ];
     }
 
-    private function outputStyle(string $action): string
+    protected function outputStyle(string $action): string
     {
         if ($action === 'deleted') {
             return 'error';
@@ -96,7 +96,7 @@ class BuildCommand extends Command
         return 'info';
     }
 
-    private function defaultDraftFile(): string
+    protected function defaultDraftFile(): string
     {
         return file_exists('draft.yml') ? 'draft.yml' : 'draft.yaml';
     }

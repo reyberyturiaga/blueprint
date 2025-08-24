@@ -14,12 +14,12 @@ use Tests\TestCase;
  */
 final class ResourceGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var ResourceGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

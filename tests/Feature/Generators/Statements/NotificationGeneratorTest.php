@@ -15,12 +15,12 @@ use Tests\TestCase;
  */
 final class NotificationGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var NotificationGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

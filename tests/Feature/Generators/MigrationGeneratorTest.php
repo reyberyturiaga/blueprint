@@ -16,12 +16,12 @@ use Tests\TestCase;
  */
 final class MigrationGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var MigrationGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

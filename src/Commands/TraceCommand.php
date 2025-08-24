@@ -28,7 +28,7 @@ class TraceCommand extends Command
 
     protected Filesystem $filesystem;
 
-    private Tracer $tracer;
+    protected Tracer $tracer;
 
     public function __construct(Filesystem $filesystem, Tracer $tracer)
     {

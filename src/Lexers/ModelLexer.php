@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class ModelLexer implements Lexer
 {
-    private static array $relationships = [
+    protected static array $relationships = [
         'belongsto' => 'belongsTo',
         'hasone' => 'hasOne',
         'hasmany' => 'hasMany',
@@ -22,7 +22,7 @@ class ModelLexer implements Lexer
         'morphedbymany' => 'morphedByMany',
     ];
 
-    private static array $dataTypes = [
+    protected static array $dataTypes = [
         'bigincrements' => 'bigIncrements',
         'biginteger' => 'bigInteger',
         'binary' => 'binary',
@@ -88,7 +88,7 @@ class ModelLexer implements Lexer
         'year' => 'year',
     ];
 
-    private static array $modifiers = [
+    protected static array $modifiers = [
         'autoincrement' => 'autoIncrement',
         'charset' => 'charset',
         'collation' => 'collation',
@@ -129,7 +129,7 @@ class ModelLexer implements Lexer
         return $registry;
     }
 
-    private function buildModel(string $name, array $columns): Model
+    protected function buildModel(string $name, array $columns): Model
     {
         $model = new Model($name);
 
@@ -217,7 +217,7 @@ class ModelLexer implements Lexer
         return $model;
     }
 
-    private function buildColumn(string $name, string $definition): Column
+    protected function buildColumn(string $name, string $definition): Column
     {
         $data_type = null;
         $modifiers = [];
@@ -268,7 +268,7 @@ class ModelLexer implements Lexer
      * for those defined in `relationships`. Then by reviewing the model
      * columns which follow the conventional naming of `model_id`.
      */
-    private function inferMissingBelongsToRelationships(Model $model): void
+    protected function inferMissingBelongsToRelationships(Model $model): void
     {
         foreach ($model->relationships()['belongsTo'] ?? [] as $relationship) {
             $column = $this->columnNameFromRelationship($relationship);
@@ -313,7 +313,7 @@ class ModelLexer implements Lexer
         }
     }
 
-    private function columnNameFromRelationship(string $relationship): string
+    protected function columnNameFromRelationship(string $relationship): string
     {
         $model = $relationship;
         if (str_contains($relationship, ':')) {
@@ -327,7 +327,7 @@ class ModelLexer implements Lexer
         return Str::snake($model) . '_id';
     }
 
-    private function hasBelongsToRelationship(Model $model, string $reference): bool
+    protected function hasBelongsToRelationship(Model $model, string $reference): bool
     {
         foreach ($model->relationships()['belongsTo'] ?? [] as $relationship) {
             if (Str::after($reference, ':') === $this->columnNameFromRelationship($relationship)) {
@@ -338,7 +338,7 @@ class ModelLexer implements Lexer
         return false;
     }
 
-    private function removeDataTypes(string $definition): string
+    protected function removeDataTypes(string $definition): string
     {
         $tokens = array_filter(
             $this->parseColumn($definition),
@@ -348,7 +348,7 @@ class ModelLexer implements Lexer
         return implode(' ', $tokens);
     }
 
-    private function parseColumn(string $definition): array
+    protected function parseColumn(string $definition): array
     {
         return preg_split('#("|\').*?\1(*SKIP)(*FAIL)|\s+#', $definition);
     }

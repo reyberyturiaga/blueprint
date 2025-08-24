@@ -14,10 +14,10 @@ use Tests\TestCase;
  */
 final class PolicyGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     /** @var PolicyGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

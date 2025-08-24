@@ -95,7 +95,7 @@ class FormRequestGenerator extends AbstractClassGenerator implements Generator
         );
     }
 
-    private function splitField($field): array
+    protected function splitField($field): array
     {
         if (Str::contains($field, '.')) {
             return explode('.', $field, 2);

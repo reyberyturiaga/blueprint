@@ -550,7 +550,7 @@ class PhpUnitTestGenerator extends AbstractClassGenerator implements Generator
         return $this->stubs['test-case'];
     }
 
-    private function addTestAssertionsTrait(Controller $controller): void
+    protected function addTestAssertionsTrait(Controller $controller): void
     {
         $this->addImport($controller, 'JMac\\Testing\\Traits\AdditionalAssertions');
         $this->addTrait($controller, 'AdditionalAssertions');
@@ -580,18 +580,18 @@ class PhpUnitTestGenerator extends AbstractClassGenerator implements Generator
 END;
     }
 
-    private function addFakerTrait(Controller $controller): void
+    protected function addFakerTrait(Controller $controller): void
     {
         $this->addImport($controller, 'Illuminate\\Foundation\\Testing\\WithFaker');
         $this->addTrait($controller, 'WithFaker');
     }
 
-    private function hasLocalVariable(array $locals, string $name): bool
+    protected function hasLocalVariable(array $locals, string $name): bool
     {
         return collect($locals)->contains(fn ($local) => str_starts_with($local, '$' . $name . ' = '));
     }
 
-    private function splitField($field): array
+    protected function splitField($field): array
     {
         if (Str::contains($field, '.')) {
             return explode('.', $field, 2);
@@ -620,13 +620,13 @@ END;
         return [$faker, $variable_name];
     }
 
-    private function addRefreshDatabaseTrait(Controller $controller): void
+    protected function addRefreshDatabaseTrait(Controller $controller): void
     {
         $this->addImport($controller, 'Illuminate\\Foundation\\Testing\\RefreshDatabase');
         $this->addTrait($controller, 'RefreshDatabase');
     }
 
-    private function determineModel(string $prefix, ?string $reference): string
+    protected function determineModel(string $prefix, ?string $reference): string
     {
         if (empty($reference) || $reference === 'id') {
             return Str::studly(Str::singular($prefix));
@@ -639,7 +639,7 @@ END;
         return Str::studly($reference);
     }
 
-    private function httpMethodForAction(string $action): string
+    protected function httpMethodForAction(string $action): string
     {
         return match ($action) {
             'store' => 'post',
@@ -649,7 +649,7 @@ END;
         };
     }
 
-    private function uniqueSetupLines(array $setup)
+    protected function uniqueSetupLines(array $setup)
     {
         return collect($setup)->filter()
             ->map(fn ($lines) => array_unique($lines))
@@ -693,7 +693,7 @@ END;
         return $name . '_' . implode('_', $verifications) . '_and_' . $final_verification;
     }
 
-    private function buildLines($lines): string
+    protected function buildLines($lines): string
     {
         return str_pad(' ', 8) . implode(PHP_EOL . str_pad(' ', 8), $lines);
     }

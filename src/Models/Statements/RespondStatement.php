@@ -6,9 +6,9 @@ use Illuminate\Support\Str;
 
 class RespondStatement
 {
-    private int $status = 200;
+    protected int $status = 200;
 
-    private ?string $content = null;
+    protected ?string $content = null;
 
     public function __construct(string $data)
     {

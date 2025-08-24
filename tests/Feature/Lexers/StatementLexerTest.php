@@ -27,7 +27,7 @@ final class StatementLexerTest extends TestCase
     /**
      * @var StatementLexer
      */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

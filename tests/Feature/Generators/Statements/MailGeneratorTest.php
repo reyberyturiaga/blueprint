@@ -14,12 +14,12 @@ use Tests\TestCase;
  */
 final class MailGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var MailGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

@@ -68,7 +68,7 @@ class EraseCommand extends Command
         return $this->call('blueprint:trace');
     }
 
-    private function outputStyle(string $action): string
+    protected function outputStyle(string $action): string
     {
         if ($action === 'created') {
             return 'error';

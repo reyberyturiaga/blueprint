@@ -14,12 +14,12 @@ use Tests\TestCase;
  */
 final class EventGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var EventGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

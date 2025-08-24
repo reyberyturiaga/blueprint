@@ -46,47 +46,47 @@ class StatementLexer implements Lexer
         return array_filter($statements);
     }
 
-    private function analyzeInertia(string $statement): InertiaStatement
+    protected function analyzeInertia(string $statement): InertiaStatement
     {
         [$view, $data] = $this->parseWithStatement($statement);
 
         return new InertiaStatement($view, $data);
     }
 
-    private function analyzeRender(string $statement): RenderStatement
+    protected function analyzeRender(string $statement): RenderStatement
     {
         [$view, $data] = $this->parseWithStatement($statement);
 
         return new RenderStatement($view, $data);
     }
 
-    private function analyzeEvent(string $statement): FireStatement
+    protected function analyzeEvent(string $statement): FireStatement
     {
         [$event, $data] = $this->parseWithStatement($statement);
 
         return new FireStatement($event, $data);
     }
 
-    private function analyzeDispatch(string $statement): DispatchStatement
+    protected function analyzeDispatch(string $statement): DispatchStatement
     {
         [$job, $data] = $this->parseWithStatement($statement);
 
         return new DispatchStatement($job, $data);
     }
 
-    private function analyzeRedirect(string $statement): RedirectStatement
+    protected function analyzeRedirect(string $statement): RedirectStatement
     {
         [$route, $data] = $this->parseWithStatement($statement);
 
         return new RedirectStatement($route, $data);
     }
 
-    private function analyzeRespond(string $statement): RespondStatement
+    protected function analyzeRespond(string $statement): RespondStatement
     {
         return new RespondStatement($statement);
     }
 
-    private function analyzeSend($statement): SendStatement
+    protected function analyzeSend($statement): SendStatement
     {
         $to = null;
         $view = null;
@@ -118,7 +118,7 @@ class StatementLexer implements Lexer
         return new SendStatement($object, $to, $data, $type, $view);
     }
 
-    private function analyzeNotify($statement): SendStatement
+    protected function analyzeNotify($statement): SendStatement
     {
         [$model, $notification, $with] = $this->extractTokens($statement, 3);
 
@@ -130,12 +130,12 @@ class StatementLexer implements Lexer
         return new SendStatement($notification, $model, $data, SendStatement::TYPE_NOTIFICATION_WITH_MODEL);
     }
 
-    private function analyzeValidate($statement): ValidateStatement
+    protected function analyzeValidate($statement): ValidateStatement
     {
         return new ValidateStatement(preg_split('/,([ \t]+)?/', $statement));
     }
 
-    private function parseWithStatement(string $statement): array
+    protected function parseWithStatement(string $statement): array
     {
         [$object, $with] = $this->extractTokens($statement, 2);
 
@@ -148,12 +148,12 @@ class StatementLexer implements Lexer
         return [$object, $data];
     }
 
-    private function extractTokens(string $statement, int $limit = -1): array
+    protected function extractTokens(string $statement, int $limit = -1): array
     {
         return array_pad(preg_split('/[ \t]+/', $statement, $limit), $limit, null);
     }
 
-    private function analyzeQuery($statement): QueryStatement
+    protected function analyzeQuery($statement): QueryStatement
     {
         if ($statement === 'all') {
             return new QueryStatement('all');
@@ -176,7 +176,7 @@ class StatementLexer implements Lexer
         return new QueryStatement('get', $this->extractTokens($statement));
     }
 
-    private function analyzeResource($statement): ResourceStatement
+    protected function analyzeResource($statement): ResourceStatement
     {
         $reference = $statement;
         $collection = null;
@@ -189,7 +189,7 @@ class StatementLexer implements Lexer
         return new ResourceStatement($reference, !is_null($collection), $collection === 'paginate');
     }
 
-    private function analyzeUpdate($statement): EloquentStatement
+    protected function analyzeUpdate($statement): EloquentStatement
     {
         if (!Str::contains($statement, ',')) {
             return new EloquentStatement('update', $statement);
@@ -200,7 +200,7 @@ class StatementLexer implements Lexer
         return new EloquentStatement('update', null, $columns);
     }
 
-    private function analyzeDefault(string $command, string $statement)
+    protected function analyzeDefault(string $command, string $statement)
     {
         if (fnmatch('fire-*', $command)) {
             return $this->analyzeEvent($statement);

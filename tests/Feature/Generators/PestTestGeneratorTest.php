@@ -15,10 +15,10 @@ use Tests\TestCase;
  */
 final class PestTestGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     /** @var PestTestGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

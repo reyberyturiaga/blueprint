@@ -9,7 +9,7 @@ class RedirectStatement
 {
     use HasParameters;
 
-    private string $route;
+    protected string $route;
 
     public function __construct(string $route, array $data = [])
     {

@@ -8,7 +8,7 @@ class FireStatement
 {
     use HasParameters;
 
-    private string $event;
+    protected string $event;
 
     public function __construct(string $event, array $data = [])
     {

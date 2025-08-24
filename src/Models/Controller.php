@@ -11,17 +11,17 @@ class Controller implements BlueprintModel
 
     public static array $apiResourceMethods = ['index', 'store', 'update', 'show', 'destroy'];
 
-    private string $name;
+    protected string $name;
 
-    private string $namespace;
+    protected string $namespace;
 
-    private array $methods = [];
+    protected array $methods = [];
 
-    private ?Policy $policy = null;
+    protected ?Policy $policy = null;
 
-    private bool $apiResource = false;
+    protected bool $apiResource = false;
 
-    private ?string $parent = null;
+    protected ?string $parent = null;
 
     public function __construct(string $name)
     {

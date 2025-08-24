@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class ControllerLexer implements Lexer
 {
-    private StatementLexer $statementLexer;
+    protected StatementLexer $statementLexer;
 
     public function __construct(StatementLexer $statementLexer)
     {
@@ -91,7 +91,7 @@ class ControllerLexer implements Lexer
         return $registry;
     }
 
-    private function generateResourceTokens(Controller $controller, array $methods)
+    protected function generateResourceTokens(Controller $controller, array $methods)
     {
         return collect($this->resourceTokens())
             ->filter(fn ($statements, $method) => in_array($method, $methods))
@@ -109,12 +109,12 @@ class ControllerLexer implements Lexer
             ->toArray();
     }
 
-    private function getControllerModelName(Controller $controller): string
+    protected function getControllerModelName(Controller $controller): string
     {
         return Str::singular($controller->prefix());
     }
 
-    private function resourceTokens(): array
+    protected function resourceTokens(): array
     {
         return [
             'index' => [
@@ -170,7 +170,7 @@ class ControllerLexer implements Lexer
         ];
     }
 
-    private function methodsForResource(string $type): array
+    protected function methodsForResource(string $type): array
     {
         if ($type === 'api') {
             return ['api.index', 'api.store', 'api.show', 'api.update', 'api.destroy'];
@@ -183,7 +183,7 @@ class ControllerLexer implements Lexer
         return array_map('trim', explode(',', strtolower($type)));
     }
 
-    private function hasOnlyApiResourceMethods(array $methods): bool
+    protected function hasOnlyApiResourceMethods(array $methods): bool
     {
         return collect($methods)->every(fn ($item, $key) => Str::startsWith($item, 'api.'));
     }

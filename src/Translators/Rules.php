@@ -86,7 +86,7 @@ class Rules
         return $rules;
     }
 
-    private static function overrideStringRuleForSpecialNames($name): string
+    protected static function overrideStringRuleForSpecialNames($name): string
     {
         if (Str::startsWith($name, 'email')) {
             return 'email';
@@ -98,7 +98,7 @@ class Rules
         return 'string';
     }
 
-    private static function betweenRuleForColumn(Column $column): string
+    protected static function betweenRuleForColumn(Column $column): string
     {
         $precision = $column->attributes()[0];
         $scale = $column->attributes()[1] ?? 0;

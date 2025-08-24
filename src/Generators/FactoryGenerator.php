@@ -210,7 +210,7 @@ class FactoryGenerator extends AbstractClassGenerator implements Generator
         );
     }
 
-    private function fullyQualifyModelReference(string $model_name)
+    protected function fullyQualifyModelReference(string $model_name)
     {
         return $this->tree->modelForContext($model_name);
     }

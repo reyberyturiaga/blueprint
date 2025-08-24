@@ -17,12 +17,12 @@ use Tests\TestCase;
  */
 final class ConfigLexerTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     /**
      * @var ConfigLexer
      */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

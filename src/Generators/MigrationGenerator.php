@@ -56,7 +56,7 @@ class MigrationGenerator extends AbstractClassGenerator implements Generator
 
     protected array $types = ['migrations'];
 
-    private bool $hasForeignKeyConstraints = false;
+    protected bool $hasForeignKeyConstraints = false;
 
     public function output(Tree $tree, $overwrite = false): array
     {
@@ -255,7 +255,7 @@ class MigrationGenerator extends AbstractClassGenerator implements Generator
         return in_array($dataType, ['id', 'ulid', 'uuid']);
     }
 
-    private function shouldAddForeignKeyConstraint(\Blueprint\Models\Column $column): bool
+    protected function shouldAddForeignKeyConstraint(\Blueprint\Models\Column $column): bool
     {
         if ($column->name() === 'id') {
             return false;

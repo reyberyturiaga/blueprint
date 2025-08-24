@@ -14,12 +14,12 @@ use Tests\TestCase;
  */
 final class FormRequestGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var FormRequestGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

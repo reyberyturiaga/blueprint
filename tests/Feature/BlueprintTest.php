@@ -19,7 +19,7 @@ final class BlueprintTest extends TestCase
     /**
      * @var Blueprint
      */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

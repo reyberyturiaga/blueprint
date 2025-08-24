@@ -8,7 +8,7 @@ class InertiaStatement
 {
     use HasParameters;
 
-    private string $view;
+    protected string $view;
 
     public function __construct(string $view, array $data = [])
     {
@@ -34,7 +34,7 @@ class InertiaStatement
         return $this->view;
     }
 
-    private function buildParameters(): string
+    protected function buildParameters(): string
     {
         $parameters = array_map(
             fn ($parameter) => sprintf(

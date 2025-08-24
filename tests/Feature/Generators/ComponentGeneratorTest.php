@@ -15,10 +15,10 @@ use Tests\TestCase;
  */
 final class ComponentGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     /** @var ComponentGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

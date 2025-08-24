@@ -17,10 +17,10 @@ final class RouteGeneratorTest extends TestCase
 {
     protected $files;
 
-    private $blueprint;
+    protected $blueprint;
 
     /** @var RouteGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

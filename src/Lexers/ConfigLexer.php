@@ -7,7 +7,7 @@ use Illuminate\Container\Container;
 
 class ConfigLexer implements Lexer
 {
-    private Container $app;
+    protected Container $app;
 
     public function __construct(?Container $app = null)
     {
@@ -23,7 +23,7 @@ class ConfigLexer implements Lexer
         return [];
     }
 
-    private function analyzeValue(array $config): void
+    protected function analyzeValue(array $config): void
     {
         $this->app['config']->set(
             'blueprint',

@@ -7,31 +7,31 @@ use Illuminate\Support\Str;
 
 class Model implements BlueprintModel
 {
-    private string $name;
+    protected string $name;
 
-    private string $namespace;
+    protected string $namespace;
 
-    private bool $pivot = false;
+    protected bool $pivot = false;
 
-    private string|bool $primaryKey = 'id';
+    protected string|bool $primaryKey = 'id';
 
-    private string|bool $timestamps = 'timestamps';
+    protected string|bool $timestamps = 'timestamps';
 
-    private string|bool $softDeletes = false;
+    protected string|bool $softDeletes = false;
 
-    private ?string $connection;
+    protected ?string $connection;
 
-    private string $table;
+    protected string $table;
 
-    private array $columns = [];
+    protected array $columns = [];
 
-    private array $relationships = [];
+    protected array $relationships = [];
 
-    private array $pivotTables = [];
+    protected array $pivotTables = [];
 
-    private array $polymorphicManyToManyTables = [];
+    protected array $polymorphicManyToManyTables = [];
 
-    private array $indexes = [];
+    protected array $indexes = [];
 
     public function __construct($name)
     {

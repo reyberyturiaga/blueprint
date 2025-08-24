@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 final class ModelLexerTest extends TestCase
 {
-    private ModelLexer $subject;
+    protected ModelLexer $subject;
 
     protected function setUp(): void
     {

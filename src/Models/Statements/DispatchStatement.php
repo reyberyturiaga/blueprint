@@ -8,7 +8,7 @@ class DispatchStatement
 {
     use HasParameters;
 
-    private string $job;
+    protected string $job;
 
     public function __construct(string $job, array $data = [])
     {

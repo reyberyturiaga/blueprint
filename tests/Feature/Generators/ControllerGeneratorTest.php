@@ -15,10 +15,10 @@ use Tests\TestCase;
  */
 final class ControllerGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     /** @var ControllerGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

@@ -4,9 +4,9 @@ namespace Blueprint\Models;
 
 class Index
 {
-    private string $type;
+    protected string $type;
 
-    private array $columns;
+    protected array $columns;
 
     public function __construct(string $type, array $columns = [])
     {

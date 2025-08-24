@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Tracer
 {
-    private Filesystem $filesystem;
+    protected Filesystem $filesystem;
 
     public function execute(Blueprint $blueprint, Filesystem $filesystem, ?array $paths = null): array
     {
@@ -48,7 +48,7 @@ class Tracer
         return $definitions;
     }
 
-    private function appClasses($paths): array
+    protected function appClasses($paths): array
     {
         $classes = [];
         foreach ($paths as $path) {
@@ -72,7 +72,7 @@ class Tracer
         }, $classes));
     }
 
-    private function loadModel(string $class)
+    protected function loadModel(string $class)
     {
         if (!class_exists($class)) {
             return null;
@@ -90,12 +90,12 @@ class Tracer
         return app($class);
     }
 
-    private function extractColumns(Model $model): array
+    protected function extractColumns(Model $model): array
     {
         return $model->getConnection()->getSchemaBuilder()->getColumns($model->getTable());
     }
 
-    private function mapColumns(array $columns): array
+    protected function mapColumns(array $columns): array
     {
         return collect($columns)
             ->keyBy('name')
@@ -148,7 +148,7 @@ class Tracer
         return implode(' ', $attributes);
     }
 
-    private static function translations(array $column): string
+    protected static function translations(array $column): string
     {
         $type = match ($column['type']) {
             'tinyint(1)', 'bit' => 'boolean',
@@ -201,7 +201,7 @@ class Tracer
         return $type ?? 'string';
     }
 
-    private function translateColumns(array $columns): array
+    protected function translateColumns(array $columns): array
     {
         if (isset($columns['id']) && str_contains($columns['id'], 'autoincrement') && str_contains($columns['id'], 'integer')) {
             unset($columns['id']);
@@ -227,7 +227,7 @@ class Tracer
         return $columns;
     }
 
-    private function relativeClassName($model): string
+    protected function relativeClassName($model): string
     {
         $name = Blueprint::relativeNamespace(get_class($model));
 

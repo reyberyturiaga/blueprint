@@ -14,12 +14,12 @@ use Tests\TestCase;
  */
 final class ViewGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var ViewGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

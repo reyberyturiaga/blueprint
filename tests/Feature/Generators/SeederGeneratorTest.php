@@ -16,10 +16,10 @@ final class SeederGeneratorTest extends TestCase
     /**
      * @var Blueprint
      */
-    private $blueprint;
+    protected $blueprint;
 
     /** @var SeederGenerator */
-    private $subject;
+    protected $subject;
 
     protected $files;
 

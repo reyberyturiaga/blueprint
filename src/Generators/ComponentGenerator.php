@@ -157,7 +157,7 @@ class ComponentGenerator extends AbstractClassGenerator implements Generator
         return $methods;
     }
 
-    private function buildBody(Component $component): string
+    protected function buildBody(Component $component): string
     {
         $properties = $this->buildProperties($component);
         $methods = $this->buildMethods($component);
@@ -169,7 +169,7 @@ class ComponentGenerator extends AbstractClassGenerator implements Generator
         return trim($properties) . PHP_EOL . rtrim($methods);
     }
 
-    private function buildMountMethod(array $properties, string $template): string
+    protected function buildMountMethod(array $properties, string $template): string
     {
         ksort($properties);
 
@@ -185,7 +185,7 @@ class ComponentGenerator extends AbstractClassGenerator implements Generator
         return $output;
     }
 
-    private function buildProperties(Component $component): string
+    protected function buildProperties(Component $component): string
     {
         $properties = $component->properties();
         if (empty($properties)) {
@@ -209,7 +209,7 @@ PHP;
         return $output;
     }
 
-    private function viewPath(Component $component): string
+    protected function viewPath(Component $component): string
     {
         $relative = Str::of($component->namespace() . '\\' . $component->className())
             ->replace('\\', DIRECTORY_SEPARATOR)

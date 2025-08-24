@@ -15,12 +15,12 @@ use Tests\TestCase;
  */
 final class InertiaPageGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var InertiaPageGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

@@ -134,7 +134,7 @@ class ModelGenerator extends AbstractClassGenerator implements Generator
         return $phpDoc;
     }
 
-    private function phpDataType(string $dataType): string
+    protected function phpDataType(string $dataType): string
     {
         static $php_data_types = [
             'id' => 'int',
@@ -237,7 +237,7 @@ class ModelGenerator extends AbstractClassGenerator implements Generator
         );
     }
 
-    private function pretty_print_array(array $data, bool $assoc = true, int $indent = 4): string
+    protected function pretty_print_array(array $data, bool $assoc = true, int $indent = 4): string
     {
         $output = var_export($data, true);
         $output = preg_replace('/^\s+/m', str_repeat(' ', $indent + 4), $output);
@@ -271,7 +271,7 @@ class ModelGenerator extends AbstractClassGenerator implements Generator
         );
     }
 
-    private function castForColumn(Column $column): ?string
+    protected function castForColumn(Column $column): ?string
     {
         if ($column->dataType() === 'date') {
             return 'date';
@@ -414,7 +414,7 @@ class ModelGenerator extends AbstractClassGenerator implements Generator
         return $methods;
     }
 
-    private function fullyQualifyModelReference(string $model_name): ?string
+    protected function fullyQualifyModelReference(string $model_name): ?string
     {
         // TODO: get model_name from tree.
         // If not found, assume parallel namespace as controller.

@@ -15,12 +15,12 @@ final class ComponentLexerTest extends TestCase
     /**
      * @var ComponentLexer
      */
-    private $subject;
+    protected $subject;
 
     /**
      * @var \Mockery\MockInterface
      */
-    private $statementLexer;
+    protected $statementLexer;
 
     protected function setUp(): void
     {

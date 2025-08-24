@@ -22,7 +22,7 @@ final class TraceTest extends TestCase
         $this->assertEquals($this->expectedStub(), trim($actual));
     }
 
-    private function expectedStub(): string
+    protected function expectedStub(): string
     {
         return <<<STUB
 created: 'app/Http/Controllers/PostController.php database/factories/PostFactory.php database/migrations/_create_posts_table.php app/Models/Post.php tests/Feature/Http/Controllers/PostControllerTest.php app/Events/NewPost.php app/Http/Requests/PostStoreRequest.php app/Jobs/SyncMedia.php app/Mail/ReviewPost.php resources/views/emails/review-post.blade.php resources/views/post/index.blade.php'

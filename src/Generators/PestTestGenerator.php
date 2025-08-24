@@ -581,7 +581,7 @@ test('{$action} uses form request validation')
 END;
     }
 
-    private function splitField($field): array
+    protected function splitField($field): array
     {
         if (Str::contains($field, '.')) {
             return explode('.', $field, 2);
@@ -610,7 +610,7 @@ END;
         return [$faker, $variable_name];
     }
 
-    private function determineModel(string $prefix, ?string $reference): string
+    protected function determineModel(string $prefix, ?string $reference): string
     {
         if (empty($reference) || $reference === 'id') {
             return Str::studly(Str::singular($prefix));
@@ -623,7 +623,7 @@ END;
         return Str::studly($reference);
     }
 
-    private function httpMethodForAction(string $action): string
+    protected function httpMethodForAction(string $action): string
     {
         return match ($action) {
             'store' => 'post',
@@ -633,7 +633,7 @@ END;
         };
     }
 
-    private function uniqueSetupLines(array $setup)
+    protected function uniqueSetupLines(array $setup)
     {
         return collect($setup)->filter()
             ->map(fn ($lines) => array_unique($lines))
@@ -677,12 +677,12 @@ END;
         return $name . '_' . implode('_', $verifications) . '_and_' . $final_verification;
     }
 
-    private function buildLines($lines): string
+    protected function buildLines($lines): string
     {
         return str_pad(' ', 4) . implode(PHP_EOL . str_pad(' ', 4), $lines);
     }
 
-    private function importAdditionalAssertionsToBaseTest(): void
+    protected function importAdditionalAssertionsToBaseTest(): void
     {
         $path = 'tests/TestCase.php';
         $fullPath = base_path($path);
@@ -714,7 +714,7 @@ END;
         $this->filesystem->put($fullPath, $updatedContent);
     }
 
-    private function hasLocalVariable(array $locals, string $name): bool
+    protected function hasLocalVariable(array $locals, string $name): bool
     {
         return collect($locals)->contains(fn ($local) => str_starts_with($local, '$' . $name . ' = '));
     }

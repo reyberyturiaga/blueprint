@@ -14,7 +14,7 @@ final class SeederLexerTest extends TestCase
     /**
      * @var SeederLexer
      */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

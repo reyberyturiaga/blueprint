@@ -6,9 +6,9 @@ use Illuminate\Support\Str;
 
 class SessionStatement
 {
-    private string $operation;
+    protected string $operation;
 
-    private string $reference;
+    protected string $reference;
 
     public function __construct(string $operation, string $reference)
     {
@@ -39,7 +39,7 @@ class SessionStatement
         );
     }
 
-    private function buildValue(array $properties): string
+    protected function buildValue(array $properties): string
     {
         $variable = str_replace('.', '->', $this->reference());
 

@@ -13,12 +13,12 @@ final class ControllerLexerTest extends TestCase
     /**
      * @var ControllerLexer
      */
-    private $subject;
+    protected $subject;
 
     /**
      * @var \Mockery\MockInterface
      */
-    private $statementLexer;
+    protected $statementLexer;
 
     protected function setUp(): void
     {

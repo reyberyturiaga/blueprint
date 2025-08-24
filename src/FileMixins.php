@@ -4,7 +4,7 @@ namespace Blueprint;
 
 class FileMixins
 {
-    private array $stubs = [];
+    protected array $stubs = [];
 
     public function stub(): \Closure
     {

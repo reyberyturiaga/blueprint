@@ -6,11 +6,11 @@ use Illuminate\Support\Str;
 
 class ResourceStatement
 {
-    private string $reference;
+    protected string $reference;
 
-    private bool $collection = false;
+    protected bool $collection = false;
 
-    private bool $paginate = false;
+    protected bool $paginate = false;
 
     public function __construct(string $reference, bool $collection = false, bool $paginate = false)
     {
@@ -57,7 +57,7 @@ class ResourceStatement
         return sprintf('return new %s(%s);', $this->name(), $this->buildArgument($properties));
     }
 
-    private function buildArgument(array $properties): string
+    protected function buildArgument(array $properties): string
     {
         if (in_array($this->reference(), $properties)) {
             return '$this->' . $this->reference();

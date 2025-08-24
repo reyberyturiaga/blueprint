@@ -14,12 +14,12 @@ use Tests\TestCase;
  */
 final class JobGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var JobGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

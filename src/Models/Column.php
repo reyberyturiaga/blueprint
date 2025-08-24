@@ -6,13 +6,13 @@ use Illuminate\Support\Str;
 
 class Column
 {
-    private array $modifiers;
+    protected array $modifiers;
 
-    private string $name;
+    protected string $name;
 
-    private string $dataType;
+    protected string $dataType;
 
-    private array $attributes;
+    protected array $attributes;
 
     public function __construct(string $name, string $dataType = 'string', array $modifiers = [], array $attributes = [])
     {

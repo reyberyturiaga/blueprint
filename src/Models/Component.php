@@ -6,13 +6,13 @@ use Blueprint\Contracts\Model as BlueprintModel;
 
 class Component implements BlueprintModel
 {
-    private string $name;
+    protected string $name;
 
-    private string $namespace;
+    protected string $namespace;
 
-    private array $properties = [];
+    protected array $properties = [];
 
-    private array $methods = [];
+    protected array $methods = [];
 
     public function __construct(string $name)
     {

@@ -11,12 +11,12 @@ use Tests\TestCase;
 
 final class ModelGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var ModelGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

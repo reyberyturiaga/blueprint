@@ -6,11 +6,11 @@ use Illuminate\Support\Str;
 
 class QueryStatement
 {
-    private string $operation;
+    protected string $operation;
 
-    private array $clauses;
+    protected array $clauses;
 
-    private ?string $model = null;
+    protected ?string $model = null;
 
     public function __construct(string $operation, array $clauses = [])
     {
@@ -88,7 +88,7 @@ class QueryStatement
         return $code;
     }
 
-    private function columnName($model, string $value): string
+    protected function columnName($model, string $value): string
     {
         if (Str::contains($value, '.')) {
             $reference = Str::before($value, '.');
@@ -100,7 +100,7 @@ class QueryStatement
         return $value;
     }
 
-    private function pluckName(string $field): string
+    protected function pluckName(string $field): string
     {
         if (Str::contains($field, '.')) {
             return Str::lower(Str::plural(str_replace('.', '_', $field)));
@@ -109,7 +109,7 @@ class QueryStatement
         return Str::lower($this->model . '_' . Str::plural($field));
     }
 
-    private function determineModel(?string $controller): ?string
+    protected function determineModel(?string $controller): ?string
     {
         if (!is_null($controller) && !empty($controller)) {
             $this->model = Str::studly(Str::singular($controller));

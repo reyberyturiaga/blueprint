@@ -14,12 +14,12 @@ use Tests\TestCase;
  */
 final class FactoryGeneratorTest extends TestCase
 {
-    private $blueprint;
+    protected $blueprint;
 
     protected $files;
 
     /** @var FactoryGenerator */
-    private $subject;
+    protected $subject;
 
     protected function setUp(): void
     {

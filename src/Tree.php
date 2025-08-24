@@ -7,9 +7,9 @@ use Illuminate\Support\Str;
 
 class Tree
 {
-    private array $tree;
+    protected array $tree;
 
-    private array $models = [];
+    protected array $models = [];
 
     public function __construct(array $tree)
     {
@@ -26,7 +26,7 @@ class Tree
         return $this->tree['components'];
     }
 
-    private function registerModels(): void
+    protected function registerModels(): void
     {
         $this->models = array_merge($this->tree['cache'] ?? [], $this->tree['models'] ?? []);
     }

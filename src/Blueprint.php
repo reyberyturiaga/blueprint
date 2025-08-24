@@ -9,9 +9,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class Blueprint
 {
-    private array $lexers = [];
+    protected array $lexers = [];
 
-    private array $generators = [];
+    protected array $generators = [];
 
     public static function relativeNamespace(string $fullyQualifiedClassName): string
     {
@@ -139,7 +139,7 @@ class Blueprint
         return true;
     }
 
-    private function transformDuplicatePropertyKeys(string $content): string
+    protected function transformDuplicatePropertyKeys(string $content): string
     {
         preg_match('/^controllers:$/m', $content, $matches, PREG_OFFSET_CAPTURE);
 
