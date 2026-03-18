@@ -3,6 +3,8 @@
 namespace Blueprint\Generators;
 
 use Blueprint\Concerns\HandlesImports;
+use Blueprint\Concerns\HandlesInterfaces;
+use Blueprint\Concerns\HandlesTraits;
 use Blueprint\Contracts\Generator;
 use Blueprint\Models\Column;
 use Blueprint\Models\Model;
@@ -11,7 +13,9 @@ use Illuminate\Support\Str;
 
 class ModelGenerator extends AbstractClassGenerator implements Generator
 {
-    use HandlesImports;
+    use HandlesImports, HandlesInterfaces, HandlesTraits {
+        HandlesTraits::buildTraits as protected buildBaseTraits;
+    }
 
     protected array $types = ['models'];
 
@@ -26,7 +30,12 @@ class ModelGenerator extends AbstractClassGenerator implements Generator
         foreach ($tree->models() as $model) {
             $path = $this->getPath($model);
 
+            $this->addTraits($model);
+            $this->addInterfaces($model);
+            $this->addImport($model, $model->parent());
+
             $this->create($path, $this->populateStub($stub, $model));
+            $this->output['created'][] = ['Model', $path];
         }
 
         return $this->output;
@@ -34,28 +43,40 @@ class ModelGenerator extends AbstractClassGenerator implements Generator
 
     protected function populateStub(string $stub, Model $model): string
     {
-        if ($model->isPivot()) {
-            $stub = str_replace('class {{ class }} extends Model', 'class {{ class }} extends Pivot', $stub);
-            $this->addImport($model, 'Illuminate\\Database\\Eloquent\\Relations\\Pivot');
-        } else {
-            $this->addImport($model, 'Illuminate\\Database\\Eloquent\\Model');
-        }
-
         $stub = str_replace('{{ namespace }}', $model->fullyQualifiedNamespace(), $stub);
         $stub = str_replace(PHP_EOL . 'class {{ class }}', $this->buildClassPhpDoc($model) . PHP_EOL . 'class {{ class }}', $stub);
         $stub = str_replace('{{ class }}', $model->name(), $stub);
+        $stub = str_replace('{{ extends }}', Str::afterLast($model->parent(), '\\') . $this->buildInterfaces($model), $stub);
 
         $body = $this->buildProperties($model);
         $body .= PHP_EOL . PHP_EOL;
         $body .= $this->buildRelationships($model);
 
-        $this->addImport($model, 'Illuminate\\Database\\Eloquent\\Factories\\HasFactory');
-        $stub = str_replace('use HasFactory;', 'use HasFactory;' . PHP_EOL . PHP_EOL . '    ' . trim($body), $stub);
-
-        $stub = $this->addTraits($model, $stub);
+        $stub = str_replace('{{ traits }}', $this->buildTraits($model) . PHP_EOL . PHP_EOL . '    ' . trim($body), $stub);
         $stub = str_replace('{{ imports }}', $this->buildImports($model), $stub);
 
         return $stub;
+    }
+
+    protected function buildTraits(Model $model): string
+    {
+        $traits = $this->buildBaseTraits($model);
+
+        if ($traits === '') {
+            return '';
+        }
+
+        if (!config('blueprint.generate_phpdocs')) {
+            return $traits;
+        }
+
+        if (!in_array('HasFactory', $this->traits[$model->name()] ?? [], true)) {
+            return $traits;
+        }
+
+        $factory = '\\Database\\Factories\\' . $model->name() . 'Factory';
+
+        return "/** @use HasFactory<{$factory}> */" . PHP_EOL . '    ' . $traits;
     }
 
     protected function buildClassPhpDoc(Model $model): string
@@ -441,28 +462,28 @@ class ModelGenerator extends AbstractClassGenerator implements Generator
             ->all();
     }
 
-    protected function addTraits(Model $model, $stub): string
+    protected function addTraits(Model $model): void
     {
-        $traits = ['HasFactory'];
-
-        if ($model->usesSoftDeletes()) {
-            $this->addImport($model, 'Illuminate\\Database\\Eloquent\\SoftDeletes');
-            $traits[] = 'SoftDeletes';
-        }
-
         if ($model->usesUlids()) {
-            $this->addImport($model, 'Illuminate\\Database\\Eloquent\\Concerns\\HasUlids');
-            $traits[] = 'HasUlids';
+            $model->addTrait(\Illuminate\Database\Eloquent\Concerns\HasUlids::class);
         }
 
         if ($model->usesUuids()) {
-            $this->addImport($model, 'Illuminate\\Database\\Eloquent\\Concerns\\HasUuids');
-            $traits[] = 'HasUuids';
+            $model->addTrait(\Illuminate\Database\Eloquent\Concerns\HasUuids::class);
         }
 
-        sort($traits);
+        foreach ($model->traits() as $trait) {
+            $this->addImport($model, $trait);
+            $this->addTrait($model, Str::afterLast($trait, '\\'));
+        }
+    }
 
-        return Str::replaceFirst('use HasFactory', 'use ' . implode(', ', $traits), $stub);
+    protected function addInterfaces(Model $model): void
+    {
+        foreach ($model->interfaces() as $interface) {
+            $this->addImport($model, $interface);
+            $this->addInterface($model, Str::afterLast($interface, '\\'));
+        }
     }
 
     protected function dateColumns(array $columns)
@@ -472,8 +493,8 @@ class ModelGenerator extends AbstractClassGenerator implements Generator
             array_filter(
                 $columns,
                 fn (Column $column) => $column->dataType() === 'date'
-                    || stripos($column->dataType(), 'datetime') !== false
-                    || stripos($column->dataType(), 'timestamp') !== false
+                || stripos($column->dataType(), 'datetime') !== false
+                || stripos($column->dataType(), 'timestamp') !== false
             )
         );
     }

@@ -38,7 +38,7 @@ final class InertiaPageGeneratorTest extends TestCase
     {
         $this->filesystem->shouldNotHaveReceived('put');
 
-        $this->assertEquals([], $this->subject->output(new Tree(['controllers' => []])));
+        $this->assertSame([], $this->subject->output(new Tree(['controllers' => []])));
     }
 
     #[Test]
@@ -49,7 +49,7 @@ final class InertiaPageGeneratorTest extends TestCase
         $tokens = $this->blueprint->parse($this->fixture('drafts/controllers-only.yaml'));
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals([], $this->subject->output($tree));
+        $this->assertSame([], $this->subject->output($tree));
     }
 
     #[Test]
@@ -63,7 +63,7 @@ final class InertiaPageGeneratorTest extends TestCase
         $tokens = $this->blueprint->parse($this->fixture('drafts/controllers-only.yaml'));
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals([], $this->subject->output($tree));
+        $this->assertSame([], $this->subject->output($tree));
     }
 
     #[Test]
@@ -80,7 +80,7 @@ final class InertiaPageGeneratorTest extends TestCase
         $tokens = $this->blueprint->parse($this->fixture('drafts/controllers-only.yaml'));
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals([], $this->subject->output($tree));
+        $this->assertSame([], $this->subject->output($tree));
     }
 
     #[Test]
@@ -106,15 +106,15 @@ final class InertiaPageGeneratorTest extends TestCase
         $tree = $this->blueprint->analyze($tokens);
         $output = $this->subject->output($tree);
 
-        $this->assertContains(
-            $path,
+        $this->assertSame(
+            [['Inertia', $path]],
             $output['created'],
         );
     }
 
     #[Test]
     #[DataProvider('inertiaAdaptersDataProvider')]
-    public function it_outputs_skipped_pages($framework, $dependencies, $path): void
+    public function it_outputs_skipped_pages($framework, $dependencies, $path, $extension): void
     {
         $this->filesystem->expects('exists')
             ->with(base_path('package.json'))
@@ -135,9 +135,9 @@ final class InertiaPageGeneratorTest extends TestCase
         $tree = $this->blueprint->analyze($tokens);
         $ouput = $this->subject->output($tree);
 
-        $this->assertEquals([
+        $this->assertSame([
             'skipped' => [
-                $path,
+                ['Inertia', $path],
             ],
         ], $ouput);
     }

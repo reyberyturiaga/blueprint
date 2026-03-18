@@ -53,6 +53,7 @@ class PestTestGenerator extends AbstractClassGenerator implements Generator
             $path = $this->getPath($controller);
 
             $this->create($path, $this->populateStub($stub, $controller));
+            $this->output['created'][] = ['Test', $path];
         }
 
         return $this->output;
@@ -115,9 +116,9 @@ class PestTestGenerator extends AbstractClassGenerator implements Generator
                 $setup['data'][] = sprintf('$%s = %s::factory()->create();', $variable, $model);
             }
 
-            if ($parent = $controller->parent()) {
-                $this->addImport($controller, $modelNamespace . '\\' . $parent);
-                $setup['data'][] = sprintf('$%s = %s::factory()->create();', Str::camel($parent), $parent);
+            if ($parentModel = $controller->model()) {
+                $this->addImport($controller, $modelNamespace . '\\' . $parentModel);
+                $setup['data'][] = sprintf('$%s = %s::factory()->create();', Str::camel($parentModel), $parentModel);
             }
 
             foreach ($statements as $statement) {
@@ -505,11 +506,11 @@ class PestTestGenerator extends AbstractClassGenerator implements Generator
             }
             $call .= ')';
 
-            if ($controller->parent()) {
-                $parent = Str::camel($controller->parent());
+            if ($controller->model()) {
+                $parentModel = Str::camel($controller->model());
                 $variable = Str::camel($context);
                 $binding = sprintf(', $%s)', $variable);
-                $params = sprintf("'%s' => $%s", $parent, $parent);
+                $params = sprintf("'%s' => $%s", $parentModel, $parentModel);
 
                 if (Str::contains($call, $binding)) {
                     $params .= sprintf(", '%s' => $%s", $variable, $variable);
@@ -709,9 +710,8 @@ END;
             $content
         );
 
-        $this->output['updated'][] = $path;
-
         $this->filesystem->put($fullPath, $updatedContent);
+        $this->output['updated'][] = ['Test', $path];
     }
 
     protected function hasLocalVariable(array $locals, string $name): bool

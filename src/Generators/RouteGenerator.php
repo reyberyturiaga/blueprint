@@ -36,7 +36,7 @@ class RouteGenerator extends AbstractClassGenerator implements Generator
         foreach (array_filter($routes) as $type => $definitions) {
             $path = 'routes/' . $type . '.php';
             $this->filesystem->append($path, $definitions . PHP_EOL);
-            $paths[] = $path;
+            $paths[] = ['Route', $path];
         }
 
         return ['updated' => $paths];
@@ -49,9 +49,9 @@ class RouteGenerator extends AbstractClassGenerator implements Generator
         $className = $this->getClassName($controller);
         $slug = config('blueprint.singular_routes') ? Str::kebab($controller->prefix()) : Str::plural(Str::kebab($controller->prefix()));
 
-        if ($controller->parent()) {
-            $parentSlug = config('blueprint.singular_routes') ? Str::kebab($controller->parent()) : Str::plural(Str::kebab($controller->parent()));
-            $parentBinding = '/{' . Str::kebab($controller->parent()) . '}/';
+        if ($controller->model()) {
+            $parentSlug = config('blueprint.singular_routes') ? Str::kebab($controller->model()) : Str::plural(Str::kebab($controller->model()));
+            $parentBinding = '/{' . Str::kebab($controller->model()) . '}/';
             $slug = $parentSlug . $parentBinding . $slug;
         }
 

@@ -2,11 +2,14 @@
 
 namespace Blueprint\Models;
 
+use Blueprint\Concerns\HasClassDefinition;
 use Blueprint\Contracts\Model as BlueprintModel;
 use Illuminate\Support\Str;
 
 class Controller implements BlueprintModel
 {
+    use HasClassDefinition;
+
     public static array $resourceMethods = ['index', 'create', 'store', 'edit', 'update', 'show', 'destroy'];
 
     public static array $apiResourceMethods = ['index', 'store', 'update', 'show', 'destroy'];
@@ -21,12 +24,13 @@ class Controller implements BlueprintModel
 
     protected bool $apiResource = false;
 
-    protected ?string $parent = null;
+    protected ?string $model = null;
 
     public function __construct(string $name)
     {
         $this->name = class_basename($name);
         $this->namespace = trim(implode('\\', array_slice(explode('\\', str_replace('/', '\\', $name)), 0, -1)), '\\');
+        $this->setParent('App\\Http\\Controllers\\Controller');
     }
 
     public function name(): string
@@ -106,13 +110,13 @@ class Controller implements BlueprintModel
         return $this->apiResource;
     }
 
-    public function setParent(string $parent): void
+    public function setModel(string $model): void
     {
-        $this->parent = Str::studly(Str::singular($parent));
+        $this->model = Str::studly(Str::singular($model));
     }
 
-    public function parent(): ?string
+    public function model(): ?string
     {
-        return $this->parent;
+        return $this->model;
     }
 }

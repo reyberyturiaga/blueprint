@@ -42,6 +42,7 @@ class FormRequestGenerator extends AbstractClassGenerator implements Generator
                     }
 
                     $this->create($path, $this->populateStub($stub, $name, $context, $statement, $controller));
+                    $this->output['created'][] = ['Form Request', $path];
                 }
             }
         }
@@ -56,7 +57,7 @@ class FormRequestGenerator extends AbstractClassGenerator implements Generator
 
     protected function getStatementPath(Controller $controller, string $name): string
     {
-        return Blueprint::appPath() . '/Http/Requests/' . ($controller->namespace() ? $controller->namespace() . '/' : '') . $name . '.php';
+        return str_replace('\\', '/', Blueprint::appPath() . '/Http/Requests/' . ($controller->namespace() ? $controller->namespace() . '/' : '') . $name . '.php');
     }
 
     protected function populateStub(string $stub, string $name, $context, ValidateStatement $validateStatement, Controller $controller): string
@@ -129,7 +130,7 @@ class FormRequestGenerator extends AbstractClassGenerator implements Generator
                         continue;
                     }
 
-                    if ($column->name() === Str::snake($controller->parent()) . '_id') {
+                    if ($column->name() === Str::snake($controller->model()) . '_id') {
                         continue;
                     }
 

@@ -94,7 +94,7 @@ final class FormRequestGeneratorTest extends TestCase
         $tokens = $this->blueprint->parse($this->fixture('drafts/validate-statements.yaml'));
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals(['created' => ['app/Http/Requests/PostIndexRequest.php', 'app/Http/Requests/PostStoreRequest.php', 'app/Http/Requests/OtherStoreRequest.php']], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Form Request', 'app/Http/Requests/PostIndexRequest.php'], ['Form Request', 'app/Http/Requests/PostStoreRequest.php'], ['Form Request', 'app/Http/Requests/OtherStoreRequest.php']]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -129,7 +129,7 @@ final class FormRequestGeneratorTest extends TestCase
         $tokens = $this->blueprint->parse($this->fixture('drafts/model-reference-validate.yaml'));
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals(['created' => ['app/Http/Requests/CertificateStoreRequest.php', 'app/Http/Requests/CertificateUpdateRequest.php']], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Form Request', 'app/Http/Requests/CertificateStoreRequest.php'], ['Form Request', 'app/Http/Requests/CertificateUpdateRequest.php']]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -176,7 +176,42 @@ final class FormRequestGeneratorTest extends TestCase
         $tokens = $this->blueprint->parse($this->fixture('drafts/nested-components.yaml'));
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals(['created' => ['app/Http/Requests/Admin/UserStoreRequest.php']], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Form Request', 'app/Http/Requests/Admin/UserStoreRequest.php']]], $this->subject->output($tree));
+    }
+
+    #[Test]
+    public function output_supports_nested_form_requests_using_backslash(): void
+    {
+        $this->filesystem->expects('stub')
+            ->with('request.stub')
+            ->andReturn($this->stub('request.stub'));
+
+        $this->filesystem->expects('exists')
+            ->with('app/Http/Requests/Api/V1')
+            ->twice()
+            ->andReturns(false, true);
+
+        $this->filesystem->expects('makeDirectory')
+            ->with('app/Http/Requests/Api/V1', 0755, true);
+
+        $this->filesystem->expects('exists')
+            ->with('app/Http/Requests/Api/V1/MasterRecordStoreRequest.php')
+            ->andReturnFalse();
+        $this->filesystem->expects('put')
+            ->with('app/Http/Requests/Api/V1/MasterRecordStoreRequest.php', $this->fixture('form-requests/master-record-store.php'));
+        $this->filesystem->expects('exists')
+            ->with('app/Http/Requests/Api/V1/MasterRecordUpdateRequest.php')
+            ->andReturnFalse();
+        $this->filesystem->expects('put')
+            ->with('app/Http/Requests/Api/V1/MasterRecordUpdateRequest.php', $this->fixture('form-requests/master-record-update.php'));
+
+        $tokens = $this->blueprint->parse($this->fixture('drafts/nested-controller-statements.yaml'));
+        $tree = $this->blueprint->analyze($tokens);
+
+        $this->assertSame(
+            ['created' => [['Form Request', 'app/Http/Requests/Api/V1/MasterRecordStoreRequest.php'], ['Form Request', 'app/Http/Requests/Api/V1/MasterRecordUpdateRequest.php']]],
+            $this->subject->output($tree)
+        );
     }
 
     #[Test]
@@ -203,7 +238,7 @@ final class FormRequestGeneratorTest extends TestCase
         $tokens = $this->blueprint->parse($this->fixture('drafts/readme-example.yaml'));
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals(['created' => ['src/path/Http/Requests/PostStoreRequest.php']], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Form Request', 'src/path/Http/Requests/PostStoreRequest.php']]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -233,7 +268,7 @@ final class FormRequestGeneratorTest extends TestCase
         ];
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals(['created' => ['app/Http/Requests/UserStoreRequest.php']], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Form Request', 'app/Http/Requests/UserStoreRequest.php']]], $this->subject->output($tree));
     }
 
     public function test_output_generates_form_request_without_softdeletes(): void
@@ -262,8 +297,8 @@ final class FormRequestGeneratorTest extends TestCase
 
         self::assertSame([
             'created' => [
-                'app/Http/Requests/ProjectStoreRequest.php',
-                'app/Http/Requests/ProjectUpdateRequest.php',
+                ['Form Request', 'app/Http/Requests/ProjectStoreRequest.php'],
+                ['Form Request', 'app/Http/Requests/ProjectUpdateRequest.php'],
             ],
         ], $this->subject->output($tree));
     }
@@ -294,8 +329,8 @@ final class FormRequestGeneratorTest extends TestCase
 
         self::assertSame([
             'created' => [
-                'app/Http/Requests/RepoStoreRequest.php',
-                'app/Http/Requests/RepoUpdateRequest.php',
+                ['Form Request', 'app/Http/Requests/RepoStoreRequest.php'],
+                ['Form Request', 'app/Http/Requests/RepoUpdateRequest.php'],
             ],
         ], $this->subject->output($tree));
     }
@@ -317,8 +352,8 @@ final class FormRequestGeneratorTest extends TestCase
 
         self::assertSame([
             'created' => [
-                'app/Http/Requests/CommentStoreRequest.php',
-                'app/Http/Requests/CommentUpdateRequest.php',
+                ['Form Request', 'app/Http/Requests/CommentStoreRequest.php'],
+                ['Form Request', 'app/Http/Requests/CommentUpdateRequest.php'],
             ],
         ], $this->subject->output($tree));
     }

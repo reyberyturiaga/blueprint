@@ -14,13 +14,14 @@
         "illuminate/filesystem": ">=12.0",
         "illuminate/support": ">=12.0",
         "laravel-shift/faker-registry": "^0.3.0",
+        "nunomaduro/termwind": "^2.3",
         "symfony/yaml": ">=7.0"
     },
     "require-dev": {
         "laravel/pint": "~1.25.0",
         "mockery/mockery": "^1.4.4",
         "orchestra/testbench": ">=9.0",
-        "phpunit/phpunit": "^11.5.3"
+        "phpunit/phpunit": "^11.5.3|^12.5.12"
     },
     "suggest": {
         "jasonmccreary/laravel-test-assertions": "Required to use additional assertions in generated tests (^2.0)."

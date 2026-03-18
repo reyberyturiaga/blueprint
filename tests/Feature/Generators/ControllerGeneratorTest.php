@@ -63,7 +63,7 @@ final class ControllerGeneratorTest extends TestCase
 
         $tokens = $this->blueprint->parse($this->fixture($definition));
         $tree = $this->blueprint->analyze($tokens);
-        $this->assertEquals(['created' => [$path]], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Controller', $path]]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -91,7 +91,7 @@ final class ControllerGeneratorTest extends TestCase
         $tokens = $this->blueprint->parse($this->fixture($definition));
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals(['created' => [$path]], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Controller', $path]]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -122,7 +122,7 @@ final class ControllerGeneratorTest extends TestCase
 
         $tokens = $this->blueprint->parse($this->fixture('drafts/pascal-case.yaml'));
         $tree = $this->blueprint->analyze($tokens);
-        $this->assertEquals(['created' => [$certificateController, $certificateTypeController]], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Controller', $certificateController], ['Controller', $certificateTypeController]]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -151,7 +151,7 @@ final class ControllerGeneratorTest extends TestCase
         $tokens = $this->blueprint->parse($this->fixture('drafts/simple-controller.yaml'));
         $tree = $this->blueprint->analyze($tokens);
 
-        $this->assertEquals(['created' => ['src/path/Other/Http/UserController.php']], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Controller', 'src/path/Other/Http/UserController.php']]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -176,7 +176,7 @@ final class ControllerGeneratorTest extends TestCase
 
         $tokens = $this->blueprint->parse($this->fixture($definition));
         $tree = $this->blueprint->analyze($tokens);
-        $this->assertEquals(['created' => [$path]], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Controller', $path]]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -201,7 +201,7 @@ final class ControllerGeneratorTest extends TestCase
 
         $tokens = $this->blueprint->parse($this->fixture($definition));
         $tree = $this->blueprint->analyze($tokens);
-        $this->assertEquals(['created' => [$path]], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Controller', $path]]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -229,7 +229,7 @@ final class ControllerGeneratorTest extends TestCase
 
         $tokens = $this->blueprint->parse($this->fixture($definition));
         $tree = $this->blueprint->analyze($tokens);
-        $this->assertEquals(['created' => [$path]], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Controller', $path]]], $this->subject->output($tree));
     }
 
     #[Test]
@@ -256,7 +256,7 @@ final class ControllerGeneratorTest extends TestCase
 
         $tokens = $this->blueprint->parse($this->fixture($definition));
         $tree = $this->blueprint->analyze($tokens);
-        $this->assertEquals(['created' => [$path]], $this->subject->output($tree));
+        $this->assertSame(['created' => [['Controller', $path]]], $this->subject->output($tree));
     }
 
     public static function controllerTreeDataProvider(): array
@@ -268,15 +268,20 @@ final class ControllerGeneratorTest extends TestCase
             ['drafts/crazy-eloquent.yaml', 'app/Http/Controllers/PostController.php', 'controllers/crazy-eloquent.php'],
             ['drafts/longhand-controller-name.yaml', 'app/Http/Controllers/UserController.php', 'controllers/longhand-controller-name.php'],
             ['drafts/nested-components.yaml', 'app/Http/Controllers/Admin/UserController.php', 'controllers/nested-components.php'],
+            ['drafts/nested-controller-statements.yaml', 'app/Http/Controllers/Api/V1/MasterRecordController.php', 'controllers/nested-controller-statements.php'],
             ['drafts/respond-statements.yaml', 'app/Http/Controllers/Api/PostController.php', 'controllers/respond-statements.php'],
             ['drafts/resource-statements.yaml', 'app/Http/Controllers/UserController.php', 'controllers/resource-statements.php'],
             ['drafts/inertia-render.yaml', 'app/Http/Controllers/CustomerController.php', 'controllers/inertia-render.php'],
             ['drafts/save-without-validation.yaml', 'app/Http/Controllers/PostController.php', 'controllers/save-without-validation.php'],
             ['drafts/api-resource-pagination.yaml', 'app/Http/Controllers/PostController.php', 'controllers/api-resource-pagination.php'],
             ['drafts/api-resource-nested.yaml', 'app/Http/Controllers/CommentController.php', 'controllers/api-resource-nested.php'],
+            ['drafts/api-resource-nested.yaml', 'app/Http/Controllers/CommentController.php', 'controllers/api-resource-nested.php'],
             ['drafts/api-routes-example.yaml', 'app/Http/Controllers/Api/CertificateController.php', 'controllers/api-routes-example.php'],
             ['drafts/invokable-controller.yaml', 'app/Http/Controllers/ReportController.php', 'controllers/invokable-controller.php'],
             ['drafts/invokable-controller-shorthand.yaml', 'app/Http/Controllers/ReportController.php', 'controllers/invokable-controller-shorthand.php'],
+            ['drafts/controller-with-custom-parent-class.yaml', 'app/Http/Controllers/CarController.php', 'controllers/controller-with-custom-parent-class.php'],
+            ['drafts/controller-with-custom-traits.yaml', 'app/Http/Controllers/CarController.php', 'controllers/controller-with-custom-traits.php'],
+            ['drafts/controller-with-custom-interfaces.yaml', 'app/Http/Controllers/CarController.php', 'controllers/controller-with-custom-interfaces.php'],
         ];
     }
 }

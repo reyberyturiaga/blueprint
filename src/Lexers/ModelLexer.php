@@ -146,6 +146,22 @@ class ModelLexer implements Lexer
                 $model->setPivot();
             }
 
+            if (isset($columns['meta']['extends'])) {
+                $model->setParent($columns['meta']['extends']);
+            }
+
+            if (isset($columns['meta']['traits'])) {
+                foreach (explode(',', $columns['meta']['traits']) as $trait) {
+                    $model->addTrait(trim($trait));
+                }
+            }
+
+            if (isset($columns['meta']['implements'])) {
+                foreach (explode(',', $columns['meta']['implements']) as $interface) {
+                    $model->addInterface(trim($interface));
+                }
+            }
+
             unset($columns['meta']);
         }
 
@@ -165,6 +181,10 @@ class ModelLexer implements Lexer
         } elseif (isset($columns['timestampstz'])) {
             $model->enableTimestamps(true);
             unset($columns['timestampstz']);
+        } elseif (config('blueprint.types.timestamps') === false) {
+            $model->disableTimestamps();
+        } else {
+            $model->enableTimestamps(strtolower(config('blueprint.types.timestamps', 'timestamp')) === 'timestamptz');
         }
 
         if (isset($columns['softdeletes'])) {
@@ -203,8 +223,12 @@ class ModelLexer implements Lexer
         }
 
         if (!isset($columns['id']) && $model->usesPrimaryKey()) {
-            $column = $this->buildColumn('id', 'id');
-            $model->addColumn($column);
+            if (config('blueprint.types.primary')) {
+                $column = $this->buildColumn('id', config('blueprint.types.primary', 'id'));
+                $model->addColumn($column);
+            } else {
+                $model->disablePrimaryKey();
+            }
         }
 
         foreach ($columns as $name => $definition) {

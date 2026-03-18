@@ -2,11 +2,14 @@
 
 namespace Blueprint\Models;
 
+use Blueprint\Concerns\HasClassDefinition;
 use Blueprint\Contracts\Model as BlueprintModel;
 use Illuminate\Support\Str;
 
 class Model implements BlueprintModel
 {
+    use HasClassDefinition;
+
     protected string $name;
 
     protected string $namespace;
@@ -37,6 +40,8 @@ class Model implements BlueprintModel
     {
         $this->name = class_basename($name);
         $this->namespace = trim(implode('\\', array_slice(explode('\\', str_replace('/', '\\', $name)), 0, -1)), '\\');
+        $this->parent = \Illuminate\Database\Eloquent\Model::class;
+        $this->addTrait(\Illuminate\Database\Eloquent\Factories\HasFactory::class);
     }
 
     public function name(): string
@@ -133,6 +138,7 @@ class Model implements BlueprintModel
     public function setPivot(): void
     {
         $this->pivot = true;
+        $this->setParent(\Illuminate\Database\Eloquent\Relations\Pivot::class);
     }
 
     public function usesCustomDatabaseConnection(): bool
@@ -198,6 +204,7 @@ class Model implements BlueprintModel
     public function enableSoftDeletes(bool $withTimezone = false): void
     {
         $this->softDeletes = $withTimezone ? 'softDeletesTz' : 'softDeletes';
+        $this->addTrait(\Illuminate\Database\Eloquent\SoftDeletes::class);
     }
 
     public function hasColumn(string $name): bool

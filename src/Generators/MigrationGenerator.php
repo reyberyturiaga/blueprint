@@ -381,7 +381,8 @@ class MigrationGenerator extends AbstractClassGenerator implements Generator
     {
         $definition = '';
         foreach ($segments as $segment) {
-            $column = Str::before(Str::snake($segment), ':');
+            $key = Str::before($segment, ':');
+            $column = Str::snake($key);
             $references = 'id';
             $on = Str::plural($column);
             $foreign = Str::singular($column) . '_' . $references;
@@ -389,7 +390,7 @@ class MigrationGenerator extends AbstractClassGenerator implements Generator
             if (config('blueprint.use_constraints')) {
                 $this->hasForeignKeyConstraints = true;
 
-                $type = isset($models[$segment]) ? $models[$segment]->idType() : 'id';
+                $type = isset($models[$key]) ? $models[$key]->idType() : 'id';
                 $definition .= $this->buildForeignKey($foreign, $on, $type) . ';' . PHP_EOL;
             } else {
                 $definition .= $this->generateForeignKeyDefinition($segment, $foreign, $models);
@@ -482,7 +483,7 @@ class MigrationGenerator extends AbstractClassGenerator implements Generator
             $path = $this->getTablePath($tableName, $sequential_timestamp->addSecond(), $overwrite);
             $action = $this->filesystem->exists($path) ? 'updated' : 'created';
             $this->filesystem->put($path, $data);
-            $this->output[$action][] = $path;
+            $this->output[$action][] = ['Migration', $path];
         }
 
         foreach ($tables['pivotTableNames'] as $tableName => $data) {
@@ -490,14 +491,14 @@ class MigrationGenerator extends AbstractClassGenerator implements Generator
             $action = $this->filesystem->exists($path) ? 'updated' : 'created';
             $this->filesystem->put($path, $data);
 
-            $this->output[$action][] = $path;
+            $this->output[$action][] = ['Migration', $path];
         }
 
         foreach ($tables['polymorphicManyToManyTables'] as $tableName => $data) {
             $path = $this->getTablePath($tableName, $sequential_timestamp->addSecond(), $overwrite);
             $action = $this->filesystem->exists($path) ? 'updated' : 'created';
             $this->filesystem->put($path, $data);
-            $this->output[$action][] = $path;
+            $this->output[$action][] = ['Migration', $path];
         }
 
         return $this->output;
@@ -520,7 +521,7 @@ class MigrationGenerator extends AbstractClassGenerator implements Generator
                     ->each(function (SplFileInfo $file) {
                         $path = $file->getPathname();
                         $this->filesystem->delete($path);
-                        $this->output['deleted'][] = $path;
+                        $this->output['deleted'][] = ['Migration', $path];
                     });
 
                 return $migration;
