@@ -13,14 +13,14 @@ class Blueprint
 
     protected array $generators = [];
 
-    private array $shorthands = [];
+    protected array $shorthands = [];
 
     public function registerShorthand(string $shorthand, \Closure $callback): void
     {
         $this->shorthands[$shorthand] = $callback;
     }
 
-    private function expandShorthands(string $content): string
+    protected function expandShorthands(string $content): string
     {
         $content = preg_replace_callback(
             '/^(\s+)(id|timestamps(Tz)?|softDeletes(Tz)?)(: true)?$/mi',

@@ -75,7 +75,7 @@ class BuildCommand extends Command
         return file_exists('draft.yml') ? 'draft.yml' : 'draft.yaml';
     }
 
-    private function exampleLine(string $action, string $type, string $path): string
+    protected function exampleLine(string $action, string $type, string $path): string
     {
         [$bg, $fg] = match ($action) {
             'created' => ['blue', 'white'],
@@ -109,7 +109,7 @@ class BuildCommand extends Command
 EOT;
     }
 
-    private function termwindOutput(string $action, string $type, string $path): void
+    protected function termwindOutput(string $action, string $type, string $path): void
     {
         renderUsing($this->output);
 

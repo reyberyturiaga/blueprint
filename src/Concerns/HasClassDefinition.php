@@ -4,7 +4,7 @@ namespace Blueprint\Concerns;
 
 trait HasClassDefinition
 {
-    private ?string $parent;
+    protected ?string $parent;
 
     protected array $traits = [];
 
